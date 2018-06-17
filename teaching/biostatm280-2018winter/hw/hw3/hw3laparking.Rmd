@@ -1,0 +1,389 @@
+---
+title: "Biostat M280 Homework 3"
+subtitle: Due ??? @ 11:59PM
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(cache = FALSE)
+library("tidyverse")
+library("lubridate")
+```
+
+```{r}
+sessionInfo()
+```
+
+# LA Parking Ticket
+
+## CSV file
+
+The `/home/m280-data/la_parking/LA_Parking_Citations.csv` file contains information about parking tickets in LA City. It is downloaded from [LA Open Data Portal](https://data.lacity.org/A-Well-Run-City/Parking-Citations/wjz9-h9np). 
+```{bash, eval = (Sys.info()[["sysname"]] == "Linux")}
+ln -sf /home/m280-data/la_parking/LA_Parking_Citations.csv LA_Parking_Citations.csv
+```
+
+The CSV file is about 500MB.
+```{bash}
+ls -l LA_Parking_Citations.csv
+```
+
+How many rows?
+```{bash}
+wc -l < LA_Parking_Citations.csv
+```
+
+First few lines:
+```{bash}
+head -5 LA_Parking_Citations.csv
+```
+
+## Import data
+
+We import the data as tibble using tidyverse:
+```{r}
+system.time({lapktk <- read_csv("LA_Parking_Citations.csv")})
+lapktk
+```
+
+## Fix column names
+
+```{r}
+names(lapktk) <- str_replace_all(names(lapktk), " ", "_")
+lapktk
+```
+
+## Fix dates and times
+
+```{r}
+library("lubridate")
+class(lapktk$Issue_Date)
+lapktk <- lapktk %>% 
+  separate(Issue_Date, into = c("Issue_month", "Issue_day", "Issue_year"), convert = TRUE) %>%
+  separate(Issue_time, into = c("Issue_hour", "Issue_minute"), sep = -2, convert = TRUE) %>%
+  mutate(Issue_DateTime = make_datetime(Issue_year, Issue_month, Issue_day, Issue_hour, Issue_minute)) %>%
+  select(-(Issue_month:Issue_minute)) %>%
+  select(Ticket_number, Issue_DateTime, everything())
+lapktk %>% print(width = Inf)
+```
+
+Range of time period:
+```{r}
+range(lapktk$Issue_DateTime, na.rm = TRUE)
+lapktk$Issue_DateTime %>% year() %>% table()
+```
+
+## Ticket frequency by time
+
+```{r}
+lapktk %>% 
+  filter(year(Issue_DateTime) == 2015) %>%
+  group_by(month(Issue_DateTime)) %>%
+  count()
+```
+
+
+```{r}
+lapktk %>% 
+  filter(year(Issue_DateTime) == 2015) %>%
+  ggplot(aes(x = Issue_DateTime)) + 
+    geom_freqpoly(binwidth = 365) + 
+    labs(title = "2015 parking tickets by day")
+```
+
+```{r}
+lapktk %>% 
+  filter(year(Issue_DateTime) == 2015) %>%
+  mutate(Issue_Month = month(Issue_DateTime, label = TRUE)) %>%  
+  ggplot(aes(x = Issue_Month)) + 
+    geom_bar() + 
+    labs(title = "2015 Parking tickets by month")
+```
+
+
+```{r}
+lapktk %>% 
+  filter(year(Issue_DateTime) == 2015) %>%
+  mutate(Issue_MDay = mday(Issue_DateTime)) %>%  
+  ggplot(aes(x = Issue_MDay)) + 
+    geom_bar() + 
+    labs(title = "2015 Parking tickets by month day")
+```
+
+
+```{r}
+lapktk %>% 
+  filter(year(Issue_DateTime) == 2015) %>%  
+  mutate(Issue_WDay = wday(Issue_DateTime, label = TRUE)) %>%  
+  ggplot(aes(x = Issue_WDay)) + 
+    geom_bar() + 
+    labs(title = "2015 Parking tickets by weekday")
+```
+
+```{r}
+lapktk %>% 
+  filter(year(Issue_DateTime) == 2015) %>%
+  mutate(Issue_Hour = hour(Issue_DateTime)) %>%  
+  ggplot(aes(x = Issue_Hour)) + 
+    geom_bar() + 
+    labs(title = "2015 Parking tickets by hours")
+```
+
+## Ticket frequency by car features
+
+```{r}
+(topcm <- lapktk %>%
+#  filter(year(Issue_DateTime) == 2015) %>%
+  group_by(Make) %>%
+  count() %>%
+  arrange(desc(n)) %>%
+  head(10))
+```
+
+```{r}
+lapktk %>%
+filter(Make %in% topcm$Make) %>%
+  ggplot(aes(x = Make)) + 
+  geom_bar() + 
+  labs(title = "2015 Parking tickets by car make")
+```
+
+```{r}
+(topcc <- lapktk %>%
+#  filter(year(Issue_DateTime) == 2015) %>%
+  group_by(Color) %>%
+  count() %>%
+  arrange(desc(n)) %>%
+  head(10))
+```
+
+```{r}
+lapktk %>%
+filter(Color %in% topcc$Color) %>%
+  ggplot(aes(x = Color)) + 
+  geom_bar() + 
+  labs(title = "2015 Parking tickets by car color")
+```
+
+## Create an SQLite database
+
+Create the tibble for writing into database:
+```{r}
+ladb <- lapktk %>% 
+  mutate(Issue_Year = as.integer(year(Issue_DateTime)), 
+         Issue_Month = as.integer(month(Issue_DateTime)),  
+         Issue_Day = mday(Issue_DateTime), 
+         Issue_Hour = hour(Issue_DateTime), 
+         Issue_Minute = minute(Issue_DateTime),
+         Issue_Wday = wday(Issue_DateTime)) %>%
+  select(Ticket_number,
+         Issue_Year:Issue_Wday,
+         Meter_Id:Longitude)
+ladb %>% print(width = Inf)
+```
+
+Import the `ladb` table into the SQLite database:
+```{r}
+library("DBI")
+library("RSQLite")
+if (Sys.info()[["sysname"]] == "Linux") {
+  db <- dbConnect(RSQLite::SQLite(), 
+                  dbname = "/home/m280-data/la_parking/LA_Parking_Citations.sqlite")
+} else if (Sys.info()[["sysname"]] == "Darwin") {
+  db <- dbConnect(RSQLite::SQLite(), 
+                  dbname = "LA_Parking_Citations.sqlite")
+}
+dbWriteTable(db, "latix", ladb, overwrite = TRUE)
+dbListTables(db)
+dbDisconnect(db)
+```
+
+```{bash, eval = (Sys.info()[["sysname"]] == "Linux")}
+ln -sf /home/m280-data/la_parking/LA_Parking_Citations.sqlite LA_Parking_Citations.sqlite
+```
+
+Size of the database file
+```{bash}
+ls -l LA_Parking_Citations.sqlite
+```
+
+<!-- ## Create an PostgreSQL database -->
+
+<!-- Import the `lapktk` data set into the PostgreSQL database: -->
+<!-- ```{r} -->
+<!-- library("DBI") -->
+<!-- library("RPostgreSQL") -->
+<!-- library("tidyverse") -->
+<!-- if (Sys.info()[["sysname"]] == "Linux") { -->
+<!--   db <- dbConnect(RPostgreSQL::PostgreSQL(),  -->
+<!--                   dbname = "laparking", -->
+<!--                   host = "localhost", -->
+<!--                   user = "postgres", -->
+<!--                   password = "m280") -->
+<!-- } else if (Sys.info()[["sysname"]] == "Darwin") { -->
+<!--   db <- dbConnect(RPostgreSQL::PostgreSQL(),  -->
+<!--                   dbname = "laparking", -->
+<!--                   host = "localhost", -->
+<!--                   user = "postgres", -->
+<!--                   password = "m280") -->
+<!-- } -->
+<!-- dbWriteTable(db, "latix", lapktk, overwrite = TRUE) -->
+<!-- dbListTables(db) -->
+<!-- dbDisconnect(db) -->
+<!-- ``` -->
+
+
+## Read data from database
+
+Connect to table in database:
+```{r}
+db <- dbConnect(RSQLite::SQLite(), dbname = "LA_Parking_Citations.sqlite")
+# db <- dbConnect(odbc::odbc(), 
+#                 driver = "PostgreSQL Driver",
+#                 database = "./LA_Parking_Citations",
+#                 host = "localhost",
+#                 port = 5432)
+dbListTables(db)
+la_sql <- dplyr::tbl(db, "latix")
+str(la_sql)
+la_sql
+nrow(la_sql)
+```
+
+## Ticket frequency by time
+
+```{r}
+la_sql %>% 
+  filter(Issue_Year == 2015) %>%
+  group_by(Issue_Month) %>%
+  count()
+```
+
+```{r}
+la_sql %>% 
+  filter(Issue_Year == 2015) %>%
+  group_by(Issue_Month) %>%
+  count() %>%
+  collect() %>%
+  ggplot(aes(x = Issue_Month, y = n)) + 
+    geom_col() +
+    labs(title = "2015 Parking tickets by month")
+```
+
+```{r}
+la_sql %>% 
+  filter(Issue_Year == 2015) %>%
+  group_by(Issue_Day) %>%
+  count()
+```
+
+```{r}
+la_sql %>% 
+  filter(Issue_Year == 2015) %>%
+  group_by(Issue_Day) %>%
+  count() %>%
+  collect() %>%
+  ggplot(aes(x = Issue_Day, y = n)) + 
+    geom_col() +
+    labs(title = "2015 Parking tickets by month day")
+```
+
+```{r}
+la_sql %>% 
+  filter(Issue_Year == 2015) %>%
+  group_by(Issue_Wday) %>%
+  count() %>%
+  collect() %>%
+  ggplot(aes(x = Issue_Wday, y = n)) + 
+    geom_col() +
+    labs(title = "2015 Parking tickets by weekday")
+```
+
+```{r}
+la_sql %>% 
+  filter(Issue_Year == 2015) %>%
+  group_by(Issue_Hour) %>%
+  count() %>%
+  collect() %>%
+  ggplot(aes(x = Issue_Hour, y = n)) + 
+    geom_col() +
+    labs(title = "2015 Parking tickets by hour")
+```
+
+## Ticket frequency by car make
+
+```{r}
+topcm <- la_sql %>%
+  filter(Issue_Year == 2015) %>%
+  group_by(Make) %>%
+  count() %>%
+  arrange(desc(n)) %>%
+  head(10) %>%
+  collect()
+topcm
+```
+
+
+
+```{r}
+topcm %>%
+  ggplot(aes(x = Make, y = n)) + 
+    geom_col() + 
+    labs(title = "2015 Parking tickets by car make")
+```
+
+## Ticket frequency by car color
+
+```{r}
+topcc <- la_sql %>%
+  filter(Issue_Year == 2015) %>%
+  group_by(Color) %>%
+  count() %>%
+  arrange(desc(n)) %>%
+  head(10) %>%
+  collect()
+topcc
+```
+
+```{r}
+topcc %>%
+  ggplot(aes(x = Color, y = n)) + 
+    geom_col() + 
+    labs(title = "2015 Parking tickets by car color")
+```
+
+## Ticket frequency by ticket type
+
+```{r}
+toptt <- la_sql %>%
+  filter(Issue_Year == 2015) %>%
+  group_by(Violation_code) %>%
+  count() %>%
+  arrange(desc(n)) %>%
+  head(10) %>%
+  collect()
+toptt
+```
+
+```{r}
+toptt %>%
+  ggplot(aes(x = Violation_code, y = n)) + 
+    geom_col() + 
+    labs(title = "2015 Parking tickets by ticket type")
+```
+
+## Revenue from parking citations
+
+```{r}
+la_sql %>%
+  filter(Issue_Year %in% c(2015, 2016)) %>%
+  group_by(Issue_Year) %>%
+  summarise(revenue = sum(Fine_amount)) %>%
+  collect()
+```
+
+## Close connection to database
+
+```{r}
+dbDisconnect(db)
+```

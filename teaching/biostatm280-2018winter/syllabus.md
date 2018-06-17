@@ -5,6 +5,10 @@ title: BIOSTAT M280
 
 ## Syllabus
 
+### Warning
+
+This course is used as a placeholder for the new course **Biostat 203B: Introduction to Data Science**. Please check syllabus carefully to be sure it is the course you want to take.
+
 ### Lectures  
 
 Tue/Thu 1p-2:30p @ CHS 61-269   
@@ -20,20 +24,20 @@ Office hours: every Tue @ 12p-1p, 2:30p-3p; every Thu @ 2:30p-3p; 1/23, 2/6, 2/2
 ### Teaching Assistant
 
 Juhyun Kim, <juhkim111@ucla.edu>  
-Office hours: Thu 9a-10a, 12p-1p @ CHS A1-241 (Computer Lab)  
+Office hours: Wed 12p-1p, Thu 12p-1p @ CHS A1-241 (Computer Lab)  
 
 ### Course Topics
 
 This is a tentative list of topics:  
 * Linux basics  
-* Git/GitHub   
-* RMarkdown   
+* Collaborative research using Git/GitHub   
+* Reproducible research using RMarkdown   
 * R programming  
-* TidyVerse  
-* Shiny  
 * Cluster computing @ UCLA  
 * Cloud computing  
-* Docker  
+* Docker
+* TidyVerse  
+* Shiny  
 * Selected tools for data science: pandas, spark, scikit-learn, TensorFlow  
 
 ### Prerequisite
