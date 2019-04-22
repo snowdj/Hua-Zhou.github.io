@@ -7,21 +7,29 @@ title: Publication
 
 Please feel free to email me <huazhou@ucla.edu> if you have any comments. 
 
-K Doubleday, **H Zhou**, H Fu, and J Zhou. (2018) A novel algorithm for generating individualized treatment decision trees and random forests, [_Journal of Computational and Graphical Statistics_](https://doi.org/10.1080/10618600.2018.1451337), in press.
+**H Zhou**, L Hu, J Zhou, and K Lange. (2019) MM algorithms for variance components models. [_Journal of Computational and Graphical Statistics_](https://doi.org/10.1080/10618600.2018.1529601), in press. \[[pdf](./media/pdf/ZhouHuZhouLange19VCMM.pdf)\]  
+A new optimization algorithm for find MLE of variance components models. 
 
-B Gaines, J Kim, and **H Zhou**. (2018) Algorithms for fitting the constrained lasso, [_Journal of Computational and Graphical Statistics_](https://doi.org/10.1080/10618600.2018.1473777), in press.
+**H Zhou**, J Sinsheimer, D Bates, B Chu, C German, S Ji, K Keys, J Kim, S Ko, G Mosher, J Papp, E Sobel, J Zhai, J Zhou, and K Lange. (2019) OpenMendel: a cooperative programming project for statistical genetics, [_Human Genetics_](https://doi.org/10.1007/s00439-019-02001-z), in press. \[[pdf](./media/pdf/Zhou19OpenMendel.pdf)\]   
+Overview of the [OpenMendel project](https://github.com/openmendel).
+
+K Doubleday, **H Zhou**, H Fu, and J Zhou. (2018) A novel algorithm for generating individualized treatment decision trees and random forests, [_Journal of Computational and Graphical Statistics_](https://doi.org/10.1080/10618600.2018.1451337), 27(4):849-860. \[[pdf](./media/pdf/DoubledayZhouFuZhou18IndividualizedTreatmentTrees.pdf)\]
+
+B Gaines, J Kim, and **H Zhou**. (2018) Algorithms for fitting the constrained lasso, [_Journal of Computational and Graphical Statistics_](https://doi.org/10.1080/10618600.2018.1473777), 27(4):861-871. \[[pdf](./media/pdf/GainesKimZhou08CLasso.pdf)\]
 
 L Hu, W Lu, J Zhou, and **H Zhou**. (2018) MM algorithms for variance component estimation and selection in logistic linear mixed models, [_Statistica Sinica_](https://doi.org/10.5705/ss.202017.0220), in press.  
 
 X Zhang, L Li, **H Zhou**, Y Zhou, D Shen, and ADNI. (2018) Tensor generalized estimating equations for longitudinal imaging analysis, [_Statistica Sinica_](https://doi.org/10.5705/ss.202017.0153), in press.  
 
-X Li, D Xu, **H Zhou**, and L Li. (2018) Tucker tensor regression and neuroimaging analysis, [_Statistics in Biosciences_](https://doi.org/10.1007/s12561-018-9215-6), in press.  
+X Li, D Xu, **H Zhou**, and L Li. (2018) Tucker tensor regression and neuroimaging analysis, [_Statistics in Biosciences_](https://doi.org/10.1007/s12561-018-9215-6), 10(3):520-545.  
 Tucker version of the tensor regression.
 
 J Zhai, J Kim, K Knox, H Twigg, **H Zhou**, and J Zhou. (2018) Variance component selection with applications to microbiome taxonomic data, [_Frontiers in Microbiology_](https://doi.org/10.3389/fmicb.2018.00509), 9:509. \[[pdf](./media/pdf/Zhai18MicrobiomeVCSelection.pdf)\]  
 Variance component penalization method for microbiome taxa association study.
 
-J Kim, Y Zhang, J Day, and **H Zhou**. (2018) MGLM: an R package for multivariate categorical data analysis. [_The R Journal_](http://hua-zhou.github.io/teaching/biostatm280-2018spring/schedule.html), in press. \[[pdf](./media/pdf/KimZhangDayZhou18MGLM)\]
+J Zhai, K Knox, H Twigg, **H Zhou**, and J Zhou. (2019) Exact variance component tests for longitudinal microbiome studies, [_Genetic Epidemiology_](https://doi.org/10.1002/gepi.22185), 43:250-262. \[[pdf](./media/pdf/ZhaiKnoxTwiggZhouZhou19MicrobiomeTest.pdf)\]
+
+J Kim, Y Zhang, J Day, and **H Zhou**. (2018) MGLM: an R package for multivariate categorical data analysis. [_The R Journal_](https://journal.r-project.org/archive/2018/RJ-2018-015/index.html), 10(1):73-90. \[[pdf](./media/pdf/KimZhangDayZhou18MGLM.pdf)\]
 
 C Li and **H Zhou**. (2017) svt: Singular value thresholding in MATLAB, [_Journal of Statistical Software_](https://www.jstatsoft.org/v081/c02), 81(2):1-13. \[[pdf](https://www.jstatsoft.org/index.php/jss/article/view/v081c02/v81c02.pdf)\]
 
@@ -126,11 +134,6 @@ We obtaine the convergence rates of the multivariate versions of several classic
 
 **H Zhou** and K Dorman. (2005) A branching process model of drug resistant HIV, book chapter in [_Deterministic and stochastic models of AIDS epidemics and HIV infections with intervention_](http://www.amazon.com/dp/9812561390), 457-496, World Sci. Publ., Hackensack, NJ.   
 We apply the numerical methods for continuous-time multi-type branching processes with immigration to study the development of drug-resistant HIV in vivo.
-
-### Non-refereed
-
-**H Zhou**. (2006) Scrambling a Rubik's cube. \[[pdf](./media/pdf/rubik.pdf)\]  
-We compute the character tables of the pocket cube (2-by-2-by-2 Rubik's cube) group and the Rubik's cube group and considered some specific random walks on these groups. The question of  "How many twists are needed to thoroughly scramble the full Rubic's cube?" is still open.
 
    [2]: http://www.stat.ncsu.edu/people/zhou/courses/st810/notes/SurveyPaper.pdf
    [3]: http://arxiv.org/abs/1204.3331
