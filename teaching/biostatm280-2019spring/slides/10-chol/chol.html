@@ -13181,6 +13181,13 @@ $$
 for linear regression, the coefficient matrix $\mathbf{X}^T \mathbf{X}$ is symmetric and positive semidefinite. How to exploit this structure?</p>
 </li>
 </ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Cholesky-decomposition">Cholesky decomposition<a class="anchor-link" href="#Cholesky-decomposition">&#182;</a></h2><ul>
 <li><p><strong>Theorem</strong>: Let $\mathbf{A} \in \mathbb{R}^{n \times n}$ be symmetric and positive definite. Then $\mathbf{A} = \mathbf{L} \mathbf{L}^T$, where $\mathbf{L}$ is lower triangular with positive diagonal entries and is unique.<br>
 <strong>Proof</strong> (by induction):<br>
@@ -13237,7 +13244,7 @@ where $\mathbf{P}$ is a permutation matrix and $\mathbf{L} \in \mathbb{R}^{n \ti
 <h2 id="Implementation">Implementation<a class="anchor-link" href="#Implementation">&#182;</a></h2><ul>
 <li><p>LAPACK functions: <a href="http://www.netlib.org/lapack/explore-html/d1/d7a/group__double_p_ocomputational_ga2f55f604a6003d03b5cd4a0adcfb74d6.html#ga2f55f604a6003d03b5cd4a0adcfb74d6"><code>?potrf</code></a> (without pivoting), <a href="http://www.netlib.org/lapack/explore-html/da/dba/group__double_o_t_h_e_rcomputational_ga31cdc13a7f4ad687f4aefebff870e1cc.html#ga31cdc13a7f4ad687f4aefebff870e1cc"><code>?pstrf</code></a> (with pivoting).</p>
 </li>
-<li><p>Julia functions: <a href="https://docs.julialang.org/en/v1/stdlib/LinearAlgebra/#LinearAlgebra.cholesky"><code>cholesky</code></a>, <a href="https://docs.julialang.org/en/v1/stdlib/LinearAlgebra/#LinearAlgebra.cholesky!"><code>cholesky!</code></a>, <a href="https://docs.julialang.org/en/stable/stdlib/linalg/#Base.LinAlg.chol"><code>chol</code></a>, or call LAPACK wrapper functions <a href="https://docs.julialang.org/en/v1/stdlib/LinearAlgebra/#LinearAlgebra.LAPACK.potrf!"><code>potrf!</code></a> and <a href="https://docs.julialang.org/en/v1/stdlib/LinearAlgebra/#LinearAlgebra.LAPACK.pstrf!"><code>pstrf!</code></a></p>
+<li><p>Julia functions: <a href="https://docs.julialang.org/en/v1/stdlib/LinearAlgebra/#LinearAlgebra.cholesky"><code>cholesky</code></a>, <a href="https://docs.julialang.org/en/v1/stdlib/LinearAlgebra/#LinearAlgebra.cholesky!"><code>cholesky!</code></a>, or call LAPACK wrapper functions <a href="https://docs.julialang.org/en/v1/stdlib/LinearAlgebra/#LinearAlgebra.LAPACK.potrf!"><code>potrf!</code></a> and <a href="https://docs.julialang.org/en/v1/stdlib/LinearAlgebra/#LinearAlgebra.LAPACK.pstrf!"><code>pstrf!</code></a></p>
 </li>
 </ul>
 <h3 id="Example:-positive-definite-matrix.">Example: positive definite matrix.<a class="anchor-link" href="#Example:-positive-definite-matrix.">&#182;</a></h3>
@@ -13392,7 +13399,8 @@ U factor:
 <div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-julia"><pre><span></span><span class="n">Achol</span><span class="o">.</span><span class="n">L</span>
+<div class=" highlight hl-julia"><pre><span></span><span class="c"># retrieve the lower triangular Cholesky factor</span>
+<span class="n">Achol</span><span class="o">.</span><span class="n">L</span>
 </pre></div>
 
     </div>
@@ -13428,7 +13436,8 @@ U factor:
 <div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-julia"><pre><span></span><span class="n">Achol</span><span class="o">.</span><span class="n">U</span>
+<div class=" highlight hl-julia"><pre><span></span><span class="c"># retrieve the upper triangular Cholesky factor</span>
+<span class="n">Achol</span><span class="o">.</span><span class="n">U</span>
 </pre></div>
 
     </div>
@@ -13686,7 +13695,7 @@ U factor:
 
 <span class="n">Random</span><span class="o">.</span><span class="n">seed!</span><span class="p">(</span><span class="mi">123</span><span class="p">)</span> <span class="c"># seed</span>
 <span class="n">A</span> <span class="o">=</span> <span class="n">randn</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
-<span class="n">A</span> <span class="o">=</span> <span class="n">A</span> <span class="o">*</span> <span class="n">A</span><span class="o">&#39;</span> <span class="c"># A has rank 3</span>
+<span class="n">A</span> <span class="o">=</span> <span class="n">A</span> <span class="o">*</span> <span class="n">transpose</span><span class="p">(</span><span class="n">A</span><span class="p">)</span> <span class="c"># A has rank 3</span>
 </pre></div>
 
     </div>
@@ -14108,8 +14117,9 @@ $$<ul>
 <span class="n">Random</span><span class="o">.</span><span class="n">seed!</span><span class="p">(</span><span class="mi">123</span><span class="p">)</span> <span class="c"># seed</span>
 
 <span class="n">n</span> <span class="o">=</span> <span class="mi">1000</span>
-<span class="n">Σ</span> <span class="o">=</span> <span class="n">randn</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="p">);</span> <span class="n">Σ</span> <span class="o">=</span> <span class="n">transpose</span><span class="p">(</span><span class="n">Σ</span><span class="p">)</span> <span class="o">*</span> <span class="n">Σ</span> <span class="o">+</span> <span class="nb">I</span> <span class="c"># covariance matrix</span>
-<span class="n">y</span> <span class="o">=</span> <span class="n">rand</span><span class="p">(</span><span class="n">MvNormal</span><span class="p">(</span><span class="n">Σ</span><span class="p">))</span> <span class="c"># one randdom sample from N(0, Σ)</span>
+<span class="c"># a pd matrix</span>
+<span class="n">Σ</span> <span class="o">=</span> <span class="n">convert</span><span class="p">(</span><span class="kt">Matrix</span><span class="p">{</span><span class="kt">Float64</span><span class="p">},</span> <span class="kt">Symmetric</span><span class="p">([</span><span class="n">i</span> <span class="o">*</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="kp">in</span> <span class="mi">1</span><span class="o">:</span><span class="n">n</span><span class="p">,</span> <span class="n">j</span> <span class="kp">in</span> <span class="mi">1</span><span class="o">:</span><span class="n">n</span><span class="p">]))</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">rand</span><span class="p">(</span><span class="n">MvNormal</span><span class="p">(</span><span class="n">Σ</span><span class="p">))</span> <span class="c"># one random sample from N(0, Σ)</span>
 
 <span class="c"># at least they give same answer</span>
 <span class="nd">@show</span> <span class="n">logpdf_mvn_1</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">Σ</span><span class="p">)</span>
@@ -14130,22 +14140,10 @@ $$<ul>
     <div class="prompt"></div>
 
 
-<div class="output_subarea output_stream output_stderr output_text">
-<pre>┌ Info: Recompiling stale cache file /Users/huazhou/.julia/compiled/v1.1/Distributions/xILW0.ji for Distributions [31c24e10-a181-5473-b8eb-7969acd0382f]
-└ @ Base loading.jl:1184
-</pre>
-</div>
-</div>
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>logpdf_mvn_1(y, Σ) = -4428.363091873411
-logpdf_mvn_2(y, Σ) = -4428.363091873412
-logpdf_mvn_3(y, Σ) = -4428.363091873412
+<pre>logpdf_mvn_1(y, Σ) = -4878.375103770505
+logpdf_mvn_2(y, Σ) = -4878.375103770553
+logpdf_mvn_3(y, Σ) = -4878.375103770553
 </pre>
 </div>
 </div>
@@ -14182,12 +14180,12 @@ logpdf_mvn_3(y, Σ) = -4428.363091873412
   memory estimate:  15.78 MiB
   allocs estimate:  14
   --------------
-  minimum time:     37.433 ms (0.00% GC)
-  median time:      40.203 ms (3.73% GC)
-  mean time:        42.566 ms (3.85% GC)
-  maximum time:     101.772 ms (49.43% GC)
+  minimum time:     37.747 ms (0.00% GC)
+  median time:      41.845 ms (3.56% GC)
+  mean time:        42.982 ms (3.71% GC)
+  maximum time:     85.951 ms (54.02% GC)
   --------------
-  samples:          118
+  samples:          117
   evals/sample:     1</pre>
 </div>
 
@@ -14225,12 +14223,12 @@ logpdf_mvn_3(y, Σ) = -4428.363091873412
   memory estimate:  15.27 MiB
   allocs estimate:  10
   --------------
-  minimum time:     7.957 ms (0.00% GC)
-  median time:      9.499 ms (16.29% GC)
-  mean time:        9.226 ms (13.50% GC)
-  maximum time:     55.657 ms (84.43% GC)
+  minimum time:     7.946 ms (0.00% GC)
+  median time:      9.517 ms (16.00% GC)
+  mean time:        9.518 ms (12.95% GC)
+  maximum time:     59.474 ms (82.87% GC)
   --------------
-  samples:          541
+  samples:          525
   evals/sample:     1</pre>
 </div>
 
@@ -14268,12 +14266,12 @@ logpdf_mvn_3(y, Σ) = -4428.363091873412
   memory estimate:  7.64 MiB
   allocs estimate:  8
   --------------
-  minimum time:     6.358 ms (0.00% GC)
-  median time:      6.662 ms (0.00% GC)
-  mean time:        7.468 ms (9.59% GC)
-  maximum time:     54.304 ms (87.59% GC)
+  minimum time:     6.353 ms (0.00% GC)
+  median time:      6.571 ms (0.00% GC)
+  mean time:        7.318 ms (9.51% GC)
+  maximum time:     54.287 ms (88.08% GC)
   --------------
-  samples:          668
+  samples:          682
   evals/sample:     1</pre>
 </div>
 
@@ -14297,7 +14295,7 @@ logpdf_mvn_3(y, Σ) = -4428.363091873412
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h3 id="Linear-regression">Linear regression<a class="anchor-link" href="#Linear-regression">&#182;</a></h3><ul>
-<li>Cholesky decomposition is <strong>one</strong> approach to solve linear regression.<ul>
+<li>Cholesky decomposition is <strong>one</strong> approach to solve linear regression. Assume $\mathbf{X} \in \mathbb{R}^{n \times p}$ and $\mathbf{y} \in \mathbb{R}^n$.  <ul>
 <li>Compute $\mathbf{X}^T \mathbf{X}$: $np^2$ flops  </li>
 <li>Compute $\mathbf{X}^T \mathbf{y}$: $2np$ flops  </li>
 <li>Cholesky decomposition of $\mathbf{X}^T \mathbf{X}$: $\frac{1}{3} p^3$ flops  </li>

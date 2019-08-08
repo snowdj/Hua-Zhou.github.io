@@ -7,7 +7,11 @@ title: Publication
 
 Please feel free to email me <huazhou@ucla.edu> if you have any comments. 
 
-**H Zhou**, L Hu, J Zhou, and K Lange. (2019) MM algorithms for variance components models. [_Journal of Computational and Graphical Statistics_](https://doi.org/10.1080/10618600.2018.1529601), in press. \[[pdf](./media/pdf/ZhouHuZhouLange19VCMM.pdf)\]  
+K Keys, **H Zhou**, K Lange. (2019) Proximal distance algorithms: theory and practice, [_Journal of Machine Learning Research_](http://jmlr.org/papers/v20/17-687.html), 20(66):1-38. \[[pdf](./media/pdf/KevinZhouLange19ProxDist.pdf)\]
+
+W Hu, W Shen, **H Zhou**, D Kong. (2019) Matrix linear discriminant analysis, [_Technometrics_](https://doi.org/10.1080/00401706.2019.1610069), in press. \[[pdf](./media/pdf/HuShenZhouKong19MatrixLDA.pdf)\]  
+
+**H Zhou**, L Hu, J Zhou, and K Lange. (2019) MM algorithms for variance components models. [_Journal of Computational and Graphical Statistics_](https://doi.org/10.1080/10618600.2018.1529601), 28(2):350-361. \[[pdf](./media/pdf/ZhouHuZhouLange19VCMM.pdf)\]  
 A new optimization algorithm for find MLE of variance components models. 
 
 **H Zhou**, J Sinsheimer, D Bates, B Chu, C German, S Ji, K Keys, J Kim, S Ko, G Mosher, J Papp, E Sobel, J Zhai, J Zhou, and K Lange. (2019) OpenMendel: a cooperative programming project for statistical genetics, [_Human Genetics_](https://doi.org/10.1007/s00439-019-02001-z), in press. \[[pdf](./media/pdf/Zhou19OpenMendel.pdf)\]   
@@ -17,11 +21,11 @@ K Doubleday, **H Zhou**, H Fu, and J Zhou. (2018) A novel algorithm for generati
 
 B Gaines, J Kim, and **H Zhou**. (2018) Algorithms for fitting the constrained lasso, [_Journal of Computational and Graphical Statistics_](https://doi.org/10.1080/10618600.2018.1473777), 27(4):861-871. \[[pdf](./media/pdf/GainesKimZhou08CLasso.pdf)\]
 
-L Hu, W Lu, J Zhou, and **H Zhou**. (2018) MM algorithms for variance component estimation and selection in logistic linear mixed models, [_Statistica Sinica_](https://doi.org/10.5705/ss.202017.0220), in press.  
+L Hu, W Lu, J Zhou, and **H Zhou**. (2018) MM algorithms for variance component estimation and selection in logistic linear mixed models, [_Statistica Sinica_](https://doi.org/10.5705/ss.202017.0220), 28:1585-1605. \[[pdf](./media/pdf/HuLvZhouZhou19GLMM.pdf)\]  
 
 X Zhang, L Li, **H Zhou**, Y Zhou, D Shen, and ADNI. (2018) Tensor generalized estimating equations for longitudinal imaging analysis, [_Statistica Sinica_](https://doi.org/10.5705/ss.202017.0153), in press.  
 
-X Li, D Xu, **H Zhou**, and L Li. (2018) Tucker tensor regression and neuroimaging analysis, [_Statistics in Biosciences_](https://doi.org/10.1007/s12561-018-9215-6), 10(3):520-545.  
+X Li, D Xu, **H Zhou**, and L Li. (2018) Tucker tensor regression and neuroimaging analysis, [_Statistics in Biosciences_](https://doi.org/10.1007/s12561-018-9215-6), 10(3):520-545. \[[pdf](./media/pdf/LiXuZhouLi18TuckerReg.pdf)\]  
 Tucker version of the tensor regression.
 
 J Zhai, J Kim, K Knox, H Twigg, **H Zhou**, and J Zhou. (2018) Variance component selection with applications to microbiome taxonomic data, [_Frontiers in Microbiology_](https://doi.org/10.3389/fmicb.2018.00509), 9:509. \[[pdf](./media/pdf/Zhai18MicrobiomeVCSelection.pdf)\]  
